@@ -20,12 +20,11 @@ makedepends=('git'
 	         )
 provides=('libtu' 'libextl' 'notion')
 conflicts=('notion')
-#source=("notion::git://github.com/neg-serg/notion#commit=${_commit}") 
+
 source=("notion::git://github.com/neg-serg/notion") 
 md5sums=('SKIP')
-
 prepare() {
-    true
+  true
 }
 
 build() {
@@ -49,10 +48,25 @@ TryExec=/usr/bin/notion
 Icon=
 Type=XSession
 EOF
-    mkdir -vp ${pkgdir}/${HOME}/.notion
-    for i in ${srcdir}/notion/example_cfg/*; do
-        cp -rvi ${i} "${pkgdir}/${HOME}/.notion"
-    done
-    chown ${USER} -R "${pkgdir}/${HOME}/.notion"
+}
+
+install(){
+  read -p "Do you want to install appropriate config in ${HOME}/.notion and move .notion to .notion_bck now (y/n)?" choice
+  case "${choice}" in 
+    y*|Y* ) 
+        if [[ -d ${HOME}/.notion ]]; then
+            rm -vr ${HOME}/.notion_bck
+            mv -v ${HOME}/.notion{,_bck}
+        fi
+        mkdir -vp ${pkgdir}/${HOME}/.notion
+        for i in ${srcdir}/notion/example_cfg/*; do
+            cp -rvi ${i} "${pkgdir}/${HOME}/.notion"
+        done
+        chown ${USER} -R "${pkgdir}/${HOME}/.notion"
+    ;;
+    n|N ) echo "OK, you can find it on the github";;
+    * ) echo "OK, you can find it on the github";;
+  esac
+
 }
 
