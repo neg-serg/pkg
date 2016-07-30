@@ -1,0 +1,58 @@
+# $Id: PKGBUILD 165753 2016-03-09 13:52:47Z spupykin $
+# Maintainer: Sergey Miroshnichenko <serg.zorg@gmail.com>
+
+pkgname=notion-neg-git
+pkgver=2016073000
+pkgrel=2
+#_commit=ca9c104bfb7acbcc5b76bf205463c7c1edc906f1
+pkgdesc="NotionWM fork with compton, dzen2, rofi, xft fonts support different default cfg"
+url="https://github.com/neg-serg/notion"
+arch=('i686' 'x86_64')
+license=('custom:LGPL')
+depends=('glib2' 'gettext' 'lua' 'libxext' 'libsm')
+optdepends=('libxrandr: xrandr support'
+            'compton: X11 compositing support')
+makedepends=('git'
+             'pkgconfig' 
+             'libxrandr' 
+             'rofi' 
+             'dzen2-xft-xpm-xinerama-git'
+	         )
+provides=('libtu' 'libextl' 'notion')
+conflicts=('notion')
+#source=("notion::git://github.com/neg-serg/notion#commit=${_commit}") 
+source=("notion::git://github.com/neg-serg/notion") 
+md5sums=('SKIP')
+
+prepare() {
+    true
+}
+
+build() {
+  cd ${srcdir}/notion
+  make ETCDIR=/etc/notion/
+}
+
+package() {
+  cd ${srcdir}/notion
+  make DESTDIR=${pkgdir} ETCDIR=/etc/notion/ install
+
+  install -Dm0644 LICENSE ${pkgdir}/usr/share/licenses/notion/LICENSE
+
+  mkdir -p ${pkgdir}/usr/share/xsessions
+  cat >${pkgdir}/usr/share/xsessions/notion.desktop <<EOF
+[Desktop Entry]
+Name=Notion
+Comment=This session logs you into Notion
+Exec=/usr/bin/notion
+TryExec=/usr/bin/notion
+Icon=
+Type=XSession
+EOF
+    mkdir -vp ${pkgdir}/${HOME}/.notion
+    for i in ${srcdir}/notion/example_cfg/*; do
+        cp -rvi ${i} "${pkgdir}/${HOME}/.notion"
+    done
+    chown ${USER} -R "${pkgdir}/${HOME}/.notion"
+}
+
