@@ -1,11 +1,9 @@
-# $Id: PKGBUILD 165753 2016-03-09 13:52:47Z spupykin $
 # Maintainer: Sergey Miroshnichenko <serg.zorg@gmail.com>
 
 pkgname=notion-neg-git
-pkgver=2016073000
-pkgrel=2
-#_commit=ca9c104bfb7acbcc5b76bf205463c7c1edc906f1
-pkgdesc="NotionWM fork with compton, dzen2, rofi, xft fonts support different default cfg. Look for https://github.com/neg-serg/notion.git for more details"
+pkgver=3612
+pkgrel=1
+pkgdesc="NotionWM fork with compton, dzen2, rofi, xft fonts support different default cfg"
 url="https://github.com/neg-serg/notion"
 arch=('i686' 'x86_64')
 license=('custom:LGPL')
@@ -13,7 +11,6 @@ depends=('glib2' 'gettext' 'lua' 'libxext' 'libsm')
 optdepends=('libxrandr: xrandr support'
             'compton: X11 compositing support')
 makedepends=('git'
-             'pkgconfig' 
              'libxrandr' 
              'rofi' 
              'dzen2-xft-xpm-xinerama-git'
@@ -23,50 +20,33 @@ conflicts=('notion')
 
 source=("notion::git://github.com/neg-serg/notion") 
 md5sums=('SKIP')
-prepare() {
-  true
+
+pkgver() {
+    cd "${srcdir}/notion" || exit 1
+    git rev-list --count HEAD
 }
 
 build() {
-  cd ${srcdir}/notion
-  make ETCDIR=/etc/notion/
+    cd "${srcdir}/notion" || exit 1
+    make
 }
 
 package() {
-  cd ${srcdir}/notion
-  make DESTDIR=${pkgdir} ETCDIR=/etc/notion/ install
+    cd "${srcdir}/notion" || exit 1
+    make DESTDIR="${pkgdir}" install
 
-  install -Dm0644 LICENSE ${pkgdir}/usr/share/licenses/notion/LICENSE
-
-  mkdir -p ${pkgdir}/usr/share/xsessions
-  cat >${pkgdir}/usr/share/xsessions/notion.desktop <<EOF
+    install -Dm0644 LICENSE "${pkgdir}/usr/share/licenses/notion/LICENSE"
+    mkdir -p "${pkgdir}/usr/share/xsessions"
+    cat > "${pkgdir}/usr/share/xsessions/notion.desktop" <<EOF
 [Desktop Entry]
 Name=Notion
 Comment=This session logs you into Notion
-Exec=/usr/bin/notion
-TryExec=/usr/bin/notion
+Exec=/usr/sbin/notion
+TryExec=/usr/sbin/notion
 Icon=
 Type=XSession
 EOF
+    for i in ${srcdir}/notion/example_cfg/*; do
+        cp -rv "${i}" "${pkgdir}/usr/etc/notion"
+    done
 }
-
-install(){
-  read -p "Do you want to install appropriate config in ${HOME}/.notion and move .notion to .notion_bck now (y/n)?" choice
-  case "${choice}" in 
-    y*|Y* ) 
-        if [[ -d ${HOME}/.notion ]]; then
-            rm -vr ${HOME}/.notion_bck
-            mv -v ${HOME}/.notion{,_bck}
-        fi
-        mkdir -vp ${pkgdir}/${HOME}/.notion
-        for i in ${srcdir}/notion/example_cfg/*; do
-            cp -rvi ${i} "${pkgdir}/${HOME}/.notion"
-        done
-        chown ${USER} -R "${pkgdir}/${HOME}/.notion"
-    ;;
-    n|N ) echo "OK, you can find it on the github";;
-    * ) echo "OK, you can find it on the github";;
-  esac
-
-}
-
