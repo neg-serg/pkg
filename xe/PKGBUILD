@@ -1,0 +1,38 @@
+_pkgname=xe
+pkgname="xe-git"
+pkgver=0.6.1.2.g15af1a7
+pkgrel=1
+pkgdesc="Vim the editor. CLI version and GTK2 GUI providing majority of features."
+arch=("i686" "x86_64")
+url="https://github.com/chneukirchen/xe"
+license=()
+depends=()
+optdepends=()
+makedepends=()
+provides=("xe")
+conflicts=()
+source=("git+https://github.com/chneukirchen/xe")
+sha256sums=("SKIP")
+#install=gvim-git.install
+
+pkgver() {
+    cd $_pkgname
+    git describe --tags | sed 's/^v//;s/-/./g'
+}
+
+prepare() {
+    true
+}
+
+build() {
+    cd $_pkgname
+    sed -i '/^PREFIX=/s;/usr/local;/usr;' ./Makefile
+    make
+}
+
+package() {
+
+    # actual installation
+    cd $_pkgname
+    make DESTDIR=$pkgdir install
+}
