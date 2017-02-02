@@ -13,7 +13,6 @@ provides=("xe")
 conflicts=()
 source=("git+https://github.com/chneukirchen/xe")
 sha256sums=("SKIP")
-#install=gvim-git.install
 
 pkgver() {
     cd $_pkgname
@@ -31,8 +30,6 @@ build() {
 }
 
 package() {
-
-    # actual installation
     cd $_pkgname
     make DESTDIR=$pkgdir install
 }

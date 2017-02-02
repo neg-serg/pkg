@@ -6,7 +6,7 @@
 
 _pkgname=vim
 pkgname="gvim-git"
-pkgver=7.4.1558
+pkgver=8.0.0016
 pkgrel=1
 pkgdesc="Vim the editor. CLI version and GTK2 GUI providing majority of features."
 arch=("i686" "x86_64")
@@ -51,6 +51,7 @@ build() {
       --enable-perlinterp=dynamic \
       --enable-pythoninterp=dynamic \
       --enable-python2interp=dynamic \
+      --enable-python3interp=dynamic \
       --enable-rubyinterp=dynamic \
       --enable-luainterp=dynamic
     make
