@@ -1,0 +1,35 @@
+_pkgname=albumdetails
+pkgname="albumdetails-git"
+pkgver=4369fd7a6d4bc17654b069a89a5671a4133e83be
+pkgrel=1
+pkgdesc="Generate details for music album"
+arch=("i686" "x86_64")
+url="https://github.com/causes-/albumdetails"
+license=()
+depends=()
+optdepends=()
+makedepends=()
+provides=("albumdetails")
+conflicts=()
+source=("git+https://github.com/causes-/albumdetails")
+sha256sums=("SKIP")
+
+pkgver() {
+    cd $_pkgname
+    git rev-parse HEAD
+}
+
+prepare() {
+    true
+}
+
+build() {
+    cd $_pkgname
+    sed -i '/^PREFIX=/s;/usr/local;/usr;' ./Makefile
+    make
+}
+
+package() {
+    cd $_pkgname
+    make DESTDIR=$pkgdir install
+}
