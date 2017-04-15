@@ -19,6 +19,7 @@ package() {
   cd "${srcdir}/Aether"
   npm install
   npm run build
+  rm -rf node_modules
   cd "${pkgdir}/usr/share/lightdm-webkit/themes/"
-  cp --recursive "${srcdir}/" "${pkgname}"
+  cp --recursive "${srcdir}/Aether" "${pkgname}"
 }
