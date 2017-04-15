@@ -1,0 +1,39 @@
+_pkgname=lsc
+pkgname="lsc-neg-git"
+pkgver=1.0
+pkgrel=1
+pkgdesc="faster ls with pointless colours forked by neg"
+arch=("any")
+url="https://github.com/neg-serg/lsc"
+license=()
+depends=()
+optdepends=()
+makedepends=()
+provides=("xe")
+conflicts=()
+source=("git+https://github.com/neg-serg/lsc")
+sha256sums=("SKIP")
+
+pkgver() {
+    echo 1.0
+}
+
+prepare() {
+    true
+}
+
+build() {
+    cd $_pkgname
+
+    git submodule init
+    # git config submodule.qux/bar.url "$srcdir/xxhash"
+    git submodule update
+
+    sed -i '/^PREFIX=/s;/usr/local;/usr;' ./Makefile
+    make
+}
+
+package() {
+    cd $_pkgname
+    make DESTDIR=$pkgdir install
+}
