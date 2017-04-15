@@ -14,8 +14,11 @@ source=("git+https://github.com/neg-serg/Aether")
 md5sums=('SKIP')
 
 package() {
-  cd "$pkgdir"
+  cd "${pkgdir}"
   mkdir -p usr/share/lightdm-webkit/themes/
-  cd usr/share/lightdm-webkit/themes/
-  cp --recursive "$srcdir/" "$pkgname"
+  cd "${srcdir}/Aether"
+  npm install
+  npm run build
+  cd "${pkgdir}/usr/share/lightdm-webkit/themes/"
+  cp --recursive "${srcdir}/" "${pkgname}"
 }
