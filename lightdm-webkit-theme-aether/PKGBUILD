@@ -17,5 +17,5 @@ package() {
   cd "$pkgdir"
   mkdir -p usr/share/lightdm-webkit/themes/
   cd usr/share/lightdm-webkit/themes/
-  cp --recursive "$srcdir/Aether-$pkgver" "$pkgname"
+  cp --recursive "$srcdir/" "$pkgname"
 }
