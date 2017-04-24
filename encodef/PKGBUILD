@@ -1,0 +1,36 @@
+_pkgname=encodef
+pkgname="encodef-git"
+pkgver=0.4.0
+pkgrel=1
+pkgdesc="This is the "encodef" suite, a suite of programs that tries to make it easier to process filenames in Unix*/Linux/POSIX systems."
+arch=("i686" "x86_64")
+url="https://github.com/neg-serg/encodef"
+license=()
+depends=()
+optdepends=()
+makedepends=()
+provides=("encodef")
+conflicts=()
+source=("git+https://github.com/neg-serg/encodef")
+sha256sums=("SKIP")
+
+pkgver() {
+    echo $pkgver
+}
+
+prepare() {
+    true
+}
+
+build() {
+    cd $_pkgname
+    autoreconf
+    ./configure --prefix=/usr
+    automake
+    make
+}
+
+package() {
+    cd $_pkgname
+    make DESTDIR=$pkgdir install
+}
