@@ -1,6 +1,6 @@
-# Maintainer: Noi Sek <noi.t.sek | gmail>
+# Maintainer: Sergey Miroshnichenko <serg.zorg | gmail>
 
-pkgname=lightdm-webkit-theme-aether
+pkgname=lightdm-webkit-theme-aether-neg
 pkgver=1.3.1
 pkgrel=1
 pkgdesc="A sleek, straightforward Archlinux theme for lightdm, more dark version with different design and backgrounds by Neg"
