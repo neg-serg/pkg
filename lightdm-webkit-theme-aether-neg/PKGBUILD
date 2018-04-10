@@ -7,7 +7,7 @@ pkgdesc="A sleek, straightforward Archlinux theme for lightdm, more dark version
 arch=('any')
 url="https://github.com/neg-serg/Aether"
 license=('GPL3')
-depends=('lightdm' 'lightdm-webkit2-greeter>=2.2.3' 'ttf-opensans')
+depends=('lightdm' 'lightdm-webkit2-greeter>=2.2.3' 'ttf-opensans' 'npm')
 install='lightdm-webkit-theme-aether.install'
 changelog='changelog.txt'
 source=("git+https://github.com/neg-serg/Aether")
