@@ -1,0 +1,36 @@
+From 0503c952ca73832b1536f31b59f8d6f09b60d71c Mon Sep 17 00:00:00 2001
+From: Neg <serg.zorg@gmail.com>
+Date: Sun, 10 Jun 2018 13:09:51 +0300
+Subject: [PATCH 1/1] (net): another format
+
+---
+ src/adapters/net.cpp | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
+
+diff --git a/src/adapters/net.cpp b/src/adapters/net.cpp
+index 5d12200..03ddd4a 100644
+--- a/src/adapters/net.cpp
++++ b/src/adapters/net.cpp
+@@ -199,16 +199,9 @@ namespace net {
+     float time_diff = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
+     float speedrate = bytes_diff / (time_diff ? time_diff : 1);
+ 
+-    vector<string> suffixes{"GB", "MB"};
+-    string suffix{"KB"};
+-
+-    while ((speedrate /= 1000) > 999) {
+-      suffix = suffixes.back();
+-      suffixes.pop_back();
+-    }
+-
+-    return sstream() << std::setw(minwidth) << std::setfill(' ') << std::setprecision(0) << std::fixed << speedrate
+-                     << " " << suffix << "/s";
++    string suffix{"K"};
++    speedrate /= 1000;
++    return sstream() << std::setw(minwidth) << std::setfill(' ') << std::setprecision(1) << std::fixed << speedrate << suffix;
+   }
+ 
+   // }}}
+-- 
+2.18.0
+
