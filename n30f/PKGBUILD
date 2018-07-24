@@ -1,0 +1,39 @@
+_pkgname=n30f
+pkgname="n30f-git"
+pkgver=1.0
+pkgrel=1
+pkgdesc="n30f is a quick hack to display a png in a borderless and transparent non-wm-managed window"
+arch=("any")
+url="https://github.com/sdhand/n30f"
+license=()
+depends=()
+optdepends=()
+makedepends=()
+provides=("n30f")
+conflicts=()
+source=("git+https://github.com/sdhand/n30f")
+sha256sums=("SKIP")
+
+pkgver() {
+    echo 1.0
+}
+
+prepare() {
+    true
+}
+
+build() {
+    cd $_pkgname
+
+    git submodule init
+    # git config submodule.qux/bar.url "$srcdir/xxhash"
+    git submodule update
+
+    sed -i '/^PREFIX=/s;/usr/local;/usr;' ./Makefile
+    make
+}
+
+package() {
+    cd $_pkgname
+    make DESTDIR=$pkgdir install
+}
