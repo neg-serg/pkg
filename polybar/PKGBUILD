@@ -1,6 +1,6 @@
 _pkgname=polybar
 pkgname="polybar-neg-git"
-pkgver=3.2
+pkgver=3.3.0
 pkgrel=1
 pkgdesc="faster ls with pointless colours forked by neg"
 arch=("any")
@@ -22,12 +22,12 @@ sha256sums=(
 )
 
 pkgver() {
-    echo 3.2
+    echo 3.3.0
 }
 
 prepare() {
     cd $_pkgname
-    git checkout 3.2.0
+    git checkout master
     git submodule update --init --recursive
     patch -Np1 -i ../0001-net-another-format.patch
 }
