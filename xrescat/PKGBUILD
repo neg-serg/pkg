@@ -1,0 +1,23 @@
+pkgname=xrescat
+pkgver=1
+pkgrel=1
+pkgdesc="Get the value of the X resource"
+arch=('i686' 'x86_64')
+url="https://github.com/regolith-linux/xrescat"
+license=('MIT')
+depends=()
+makedepends=()
+source=("git://github.com/regolith-linux/xrescat")
+md5sums=('SKIP')
+
+build() {
+  cd "$pkgname"
+  make
+}
+
+package() {
+  cd "$pkgname"
+  make DESTDIR="$pkgdir" install
+}
+
+# vim: ft=sh syn=sh
