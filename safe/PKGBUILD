@@ -1,0 +1,35 @@
+_pkgname=safe
+pkgname="safe-git"
+pkgver=1.1.2.g56ecbb8
+pkgrel=1
+pkgdesc="safe is a password-protected secret keeper"
+arch=("i686" "x86_64")
+url="git+git://z3bra.org/safe.git"
+license=()
+depends=()
+optdepends=()
+makedepends=()
+provides=("xe")
+conflicts=()
+source=("git+git://z3bra.org/safe.git")
+sha256sums=("SKIP")
+
+pkgver() {
+    cd $_pkgname
+    git describe --tags | sed 's/^v//;s/-/./g'
+}
+
+prepare() {
+    true
+}
+
+build() {
+    cd $_pkgname
+    sed -i '/^PREFIX=/s;/usr/local;/usr;' ./makefile
+    make
+}
+
+package() {
+    cd $_pkgname
+    make DESTDIR=$pkgdir install
+}
