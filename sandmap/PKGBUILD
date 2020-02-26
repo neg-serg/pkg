@@ -1,0 +1,35 @@
+_pkgname=sandmap
+pkgname="sandmap-git"
+pkgver=1.2.0
+pkgrel=1
+pkgdesc="Tool supporting network and system reconnaissance using the massive Nmap engine"
+arch=("any")
+url="https://github.com/trimstray/sandmap"
+license=()
+depends=()
+optdepends=()
+makedepends=()
+provides=("sandmap")
+conflicts=()
+source=("git+https://github.com/trimstray/sandmap")
+sha256sums=("SKIP")
+
+pkgver() {
+    echo 1.2.0
+}
+
+prepare() {
+    cd $_pkgname
+    git submodule init
+    git submodule update
+}
+
+build() {
+    cd $_pkgname
+    ./setup.sh install
+}
+
+package() {
+    true
+}
+
