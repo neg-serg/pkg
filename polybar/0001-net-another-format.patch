@@ -25,7 +25,7 @@ index 5d12200..03ddd4a 100644
 -
 -    return sstream() << std::setw(minwidth) << std::setfill(' ') << std::setprecision(0) << std::fixed << speedrate
 -                     << " " << suffix << "/s";
-+    string suffix{"K"};
++    string suffix{""};
 +    speedrate /= 1000;
 +    return sstream() << std::setw(minwidth) << std::setfill(' ') << std::setprecision(1) << std::fixed << speedrate << suffix;
    }
