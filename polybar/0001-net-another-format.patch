@@ -1,36 +1,68 @@
-From 0503c952ca73832b1536f31b59f8d6f09b60d71c Mon Sep 17 00:00:00 2001
+From 7e592007170b39674e22c0b37e7abf92fefdd9b8 Mon Sep 17 00:00:00 2001
 From: Neg <serg.zorg@gmail.com>
-Date: Sun, 10 Jun 2018 13:09:51 +0300
-Subject: [PATCH 1/1] (net): another format
+Date: Thu, 5 Aug 2021 01:22:01 +0300
+Subject: [PATCH] Another net format
 
 ---
- src/adapters/net.cpp | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ include/adapters/net.hpp    |  4 ++--
+ include/modules/network.hpp |  2 +-
+ src/adapters/net.cpp        | 14 ++------------
+ 3 files changed, 5 insertions(+), 15 deletions(-)
 
+diff --git a/include/adapters/net.hpp b/include/adapters/net.hpp
+index 74ef7cea..49c2e03c 100644
+--- a/include/adapters/net.hpp
++++ b/include/adapters/net.hpp
+@@ -84,8 +84,8 @@ namespace net {
+ 
+     string ip() const;
+     string ip6() const;
+-    string downspeed(int minwidth = 3, const string& unit = "B/s") const;
+-    string upspeed(int minwidth = 3, const string& unit = "B/s") const;
++    string downspeed(int minwidth = 3, const string& unit = "") const;
++    string upspeed(int minwidth = 3, const string& unit = "") const;
+     void set_unknown_up(bool unknown = true);
+ 
+    protected:
+diff --git a/include/modules/network.hpp b/include/modules/network.hpp
+index fc7ce594..7ef9e861 100644
+--- a/include/modules/network.hpp
++++ b/include/modules/network.hpp
+@@ -54,7 +54,7 @@ namespace modules {
+     int m_udspeed_minwidth{0};
+     bool m_accumulate{false};
+     bool m_unknown_up{false};
+-    string m_udspeed_unit{"B/s"};
++    string m_udspeed_unit{""};
+   };
+ }  // namespace modules
+ 
 diff --git a/src/adapters/net.cpp b/src/adapters/net.cpp
-index 5d12200..03ddd4a 100644
+index 99a421ff..47e6ff84 100644
 --- a/src/adapters/net.cpp
 +++ b/src/adapters/net.cpp
-@@ -199,16 +199,9 @@ namespace net {
-     float time_diff = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
-     float speedrate = bytes_diff / (time_diff ? time_diff : 1);
- 
--    vector<string> suffixes{"GB", "MB"};
--    string suffix{"KB"};
+@@ -283,19 +283,9 @@ namespace net {
+     const std::chrono::duration<float> duration = m_status.current.time - m_status.previous.time;
+     float time_diff = duration.count();
+     float speedrate = bytes_diff / time_diff;
+-
+-    vector<pair<string,int>> units{make_pair("G", 2), make_pair("M", 1)};
+     string suffix{"K"};
+-    int precision = 0;
 -
 -    while ((speedrate /= 1000) > 999) {
--      suffix = suffixes.back();
--      suffixes.pop_back();
+-      suffix = units.back().first;
+-      precision = units.back().second;
+-      units.pop_back();
 -    }
 -
--    return sstream() << std::setw(minwidth) << std::setfill(' ') << std::setprecision(0) << std::fixed << speedrate
--                     << " " << suffix << "/s";
-+    string suffix{""};
+-    return sstream() << std::setw(minwidth) << std::setfill(' ') << std::setprecision(precision) << std::fixed << speedrate
+-                     << " " << suffix << unit;
 +    speedrate /= 1000;
-+    return sstream() << std::setw(minwidth) << std::setfill(' ') << std::setprecision(1) << std::fixed << speedrate << suffix;
++    return sstream() << std::setw(minwidth) << std::setprecision(1) << std::fixed << speedrate;
    }
  
    // }}}
 -- 
-2.18.0
+2.32.0
 

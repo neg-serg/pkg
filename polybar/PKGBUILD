@@ -1,6 +1,6 @@
 _pkgname=polybar
 pkgname="polybar-neg-git"
-pkgver=3.4.3
+pkgver=3.5.6
 pkgrel=1
 pkgdesc="faster ls with pointless colours forked by neg"
 arch=("any")
@@ -22,7 +22,7 @@ sha256sums=(
 )
 
 pkgver() {
-    echo 3.4.3
+    echo 3.5.6
 }
 
 prepare() {
