@@ -1,0 +1,47 @@
+# Maintainer: Sergey Miroshnichenko <serg.zorg@gmail.com>
+
+pkgname=negwm
+pkgver=0.9
+pkgrel=1
+pkgdesc="Clever assist for i3-wm"
+arch=('x86_64')
+url="https://github.com/neg-serg/negwm"
+license=('MIT')
+depends=('glib2' 'gettext' 'python' 'i3-wm' 'dash')
+optdepends=(
+    'libxrandr: xrandr support'
+    'rofi: x11 menu'
+    'picom: X11 compositing support'
+    'zsh: better shell'
+    'tmux: terminal multiplexor'
+    'dunst: x11 notification daemon'
+    'xdo: x11 window manipulation tools'
+    'alacritty: terminal emulator'
+    'kitty: terminal emulator'
+    'pulseaudio: general-purpose sound server'
+)
+makedepends=('git' 'python-setuptools')
+source=('negwm::git+https://github.com/neg-serg/negwm')
+sha512sums=('SKIP')
+
+pkgver() {
+    cd "${srcdir}/negwm"
+    git rev-list --count HEAD
+}
+
+prepare() {
+    true
+}
+
+build() {
+    cd negwm
+    poetry install
+}
+
+check() {
+    true
+}
+
+package() {
+    cd negwm
+}
